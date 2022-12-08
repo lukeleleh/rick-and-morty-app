@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:RickAndMortyPackage">
+   </FileRef>
+   <FileRef
       location = "group:Sources/RickAndMortyAPI">
    </FileRef>
    <FileRef
