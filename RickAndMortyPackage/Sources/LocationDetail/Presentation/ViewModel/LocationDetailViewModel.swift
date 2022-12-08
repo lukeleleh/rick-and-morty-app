@@ -1,4 +1,3 @@
-import Combine
 import Dispatch
 import Domain
 import Foundation
@@ -22,7 +21,6 @@ typealias ViewState = LocationDetailPresentation
 
 final class LocationDetailViewModel: LocationDetailViewModelOutput {
     @Published private(set) var state: ViewState
-    private var cancellables = Set<AnyCancellable>()
     private let location: Location
     private let navigator: LocationDetailWireframe
     private let dependencies: Dependencies
@@ -40,13 +38,15 @@ final class LocationDetailViewModel: LocationDetailViewModelOutput {
 
     private func retrieveLocationCharacters() {
         guard let locationCharactersUrl = location.residentListUrl else { return }
-        dependencies.getCharacterList.retrieve(requestType: .url(locationCharactersUrl))
-            .receive(on: DispatchQueue.main)
-            .sink { _ in } receiveValue: { [weak self] listInfo in
-                guard let self = self else { return }
-                self.state = self.dependencies.locationDetailViewMapper.map(from: listInfo, for: self.state)
+        Task { @MainActor in
+            let locationListResult = await dependencies.getCharacterList.retrieve(requestType: .url(locationCharactersUrl))
+
+            guard let listInfo = try? locationListResult.get() else {
+                return
             }
-            .store(in: &cancellables)
+
+            state = dependencies.locationDetailViewMapper.map(from: listInfo, for: state)
+        }
     }
 }
 
