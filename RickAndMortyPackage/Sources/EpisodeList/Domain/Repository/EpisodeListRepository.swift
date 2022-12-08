@@ -1,6 +1,7 @@
-import Combine
 import Domain
 import struct Foundation.URL
+
+typealias EpisodeListResult = Result<EpisodeList, EpisodeListRepositoryError>
 
 enum EpisodeListRepositoryError: Error {
     case unableToDecode
@@ -8,6 +9,6 @@ enum EpisodeListRepositoryError: Error {
 }
 
 protocol EpisodeListRepository {
-    func retrieve() -> AnyPublisher<EpisodeList, EpisodeListRepositoryError>
-    func retrieve(url: URL) -> AnyPublisher<EpisodeList, EpisodeListRepositoryError>
+    func retrieve() async -> EpisodeListResult
+    func retrieve(url: URL) async -> EpisodeListResult
 }
