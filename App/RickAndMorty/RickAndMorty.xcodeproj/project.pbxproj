@@ -3,21 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0B2C99CA264076EF00F7A181 /* Colors.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B2C99C9264076EF00F7A181 /* Colors.xcassets */; };
-		0B32A1CC23E61271006D645F /* EpisodeList in Frameworks */ = {isa = PBXBuildFile; productRef = 0B32A1CB23E61271006D645F /* EpisodeList */; };
-		0B32A1CE23E61275006D645F /* LocationList in Frameworks */ = {isa = PBXBuildFile; productRef = 0B32A1CD23E61275006D645F /* LocationList */; };
-		0B5D16F325D1B59B008902D0 /* EpisodeDetail in Frameworks */ = {isa = PBXBuildFile; productRef = 0B5D16F225D1B59B008902D0 /* EpisodeDetail */; };
 		0B7E0A3423DC4E45006DD3AC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0B7E0A3323DC4E45006DD3AC /* Assets.xcassets */; };
 		0B7E0A3723DC4E45006DD3AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0B7E0A3523DC4E45006DD3AC /* LaunchScreen.storyboard */; };
 		0B7E0A4223DC4E45006DD3AC /* RickAndMortyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B7E0A4123DC4E45006DD3AC /* RickAndMortyTests.swift */; };
-		0B7E0A4E23DC4F2F006DD3AC /* CharacterList in Frameworks */ = {isa = PBXBuildFile; productRef = 0B7E0A4D23DC4F2F006DD3AC /* CharacterList */; };
-		0B958E4225D071840078317A /* LocationDetail in Frameworks */ = {isa = PBXBuildFile; productRef = 0B958E4125D071840078317A /* LocationDetail */; };
-		0BAD298324796B730089CE4B /* CharacterDetail in Frameworks */ = {isa = PBXBuildFile; productRef = 0BAD298224796B730089CE4B /* CharacterDetail */; };
-		0BB9002A259A44E500A66122 /* Filters in Frameworks */ = {isa = PBXBuildFile; productRef = 0BB90029259A44E500A66122 /* Filters */; };
 		0BB9C9B424850F1100EE4B65 /* TabBarIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BB9C9B324850F1100EE4B65 /* TabBarIcon.swift */; };
 		0BBBEDDA2665516B00F1EF34 /* DependenciesResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBBEDD92665516B00F1EF34 /* DependenciesResolver.swift */; };
 		0BEF1D45251A775000AC73B4 /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF1D44251A775000AC73B4 /* MainTabBar.swift */; };
@@ -54,13 +47,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0B32A1CE23E61275006D645F /* LocationList in Frameworks */,
-				0B32A1CC23E61271006D645F /* EpisodeList in Frameworks */,
-				0B958E4225D071840078317A /* LocationDetail in Frameworks */,
-				0BB9002A259A44E500A66122 /* Filters in Frameworks */,
-				0B5D16F325D1B59B008902D0 /* EpisodeDetail in Frameworks */,
-				0B7E0A4E23DC4F2F006DD3AC /* CharacterList in Frameworks */,
-				0BAD298324796B730089CE4B /* CharacterDetail in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -173,13 +159,6 @@
 			);
 			name = RickAndMorty;
 			packageProductDependencies = (
-				0B7E0A4D23DC4F2F006DD3AC /* CharacterList */,
-				0B32A1CB23E61271006D645F /* EpisodeList */,
-				0B32A1CD23E61275006D645F /* LocationList */,
-				0BAD298224796B730089CE4B /* CharacterDetail */,
-				0BB90029259A44E500A66122 /* Filters */,
-				0B958E4125D071840078317A /* LocationDetail */,
-				0B5D16F225D1B59B008902D0 /* EpisodeDetail */,
 			);
 			productName = RickAndMorty;
 			productReference = 0B7E0A2723DC4E44006DD3AC /* RickAndMorty.app */;
@@ -528,37 +507,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		0B32A1CB23E61271006D645F /* EpisodeList */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = EpisodeList;
-		};
-		0B32A1CD23E61275006D645F /* LocationList */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LocationList;
-		};
-		0B5D16F225D1B59B008902D0 /* EpisodeDetail */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = EpisodeDetail;
-		};
-		0B7E0A4D23DC4F2F006DD3AC /* CharacterList */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CharacterList;
-		};
-		0B958E4125D071840078317A /* LocationDetail */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = LocationDetail;
-		};
-		0BAD298224796B730089CE4B /* CharacterDetail */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = CharacterDetail;
-		};
-		0BB90029259A44E500A66122 /* Filters */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Filters;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0B7E0A1F23DC4E44006DD3AC /* Project object */;
 }

@@ -5,42 +5,6 @@
       location = "group:RickAndMortyPackage">
    </FileRef>
    <FileRef
-      location = "group:Sources/RickAndMortyAPI">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/EpisodeDetail">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/LocationDetail">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/SwiftUtils">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/SwiftUIUtils">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/Filters">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/Domain">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/Network">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/CharacterDetail">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/CharacterList">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/EpisodeList">
-   </FileRef>
-   <FileRef
-      location = "group:Sources/LocationList">
-   </FileRef>
-   <FileRef
       location = "group:App/RickAndMorty/RickAndMorty.xcodeproj">
    </FileRef>
 </Workspace>
