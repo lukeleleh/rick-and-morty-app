@@ -1,4 +1,3 @@
-import Combine
 import Domain
 import struct Foundation.URL
 
@@ -9,20 +8,21 @@ struct GetLocationList: GetLocationListUseCase {
         self.dependencies = dependencies
     }
 
-    func retrieve(requestType: GetLocationListType) -> AnyPublisher<LocationListInfo, GetLocationListError> {
-        let publisher: AnyPublisher<LocationList, LocationListRepositoryError> = {
-            switch requestType {
-            case .homePage:
-                return dependencies.repository.retrieve()
-            case let .url(url):
-                return dependencies.repository.retrieve(url: url)
-            }
-        }()
+    func retrieve(requestType: GetLocationListType) async -> Swift.Result<LocationListInfo, GetLocationListError> {
+        let repositoryResult: LocationListResult
+        switch requestType {
+        case .homePage:
+            repositoryResult = await dependencies.repository.retrieve()
+        case let .url(url):
+            repositoryResult = await dependencies.repository.retrieve(url: url)
+        }
 
-        return publisher
-            .map(dependencies.mapper.map(response:))
-            .mapError(dependencies.mapper.map(error:))
-            .eraseToAnyPublisher()
+        switch repositoryResult {
+        case let .success(list):
+            return .success(dependencies.mapper.map(response: list))
+        case let .failure(error):
+            return .failure(dependencies.mapper.map(error: error))
+        }
     }
 }
 

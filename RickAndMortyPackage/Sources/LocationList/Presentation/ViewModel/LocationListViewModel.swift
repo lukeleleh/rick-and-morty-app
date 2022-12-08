@@ -1,4 +1,3 @@
-import Combine
 import Dispatch
 import Domain
 import Foundation
@@ -45,7 +44,6 @@ enum ViewState {
 final class LocationListViewModel: LocationListViewModelOutput {
     @Published private(set) var state: ViewState = .display(locationList: .placeholder(numberOfItems: 20))
     private var nextPageRequest: GetLocationListType?
-    private var cancellables = Set<AnyCancellable>()
     private let navigator: LocationListWireframe
     private let dependencies: Dependencies
 
@@ -58,34 +56,30 @@ final class LocationListViewModel: LocationListViewModelOutput {
     }
 
     private func retrieveLocations(requestType: GetLocationListType, shouldReload: Bool) {
-        dependencies.getLocationList.retrieve(requestType: requestType)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                switch completion {
-                case let .failure(error):
-                    self?.mapError(error, shouldReload: shouldReload)
-                case .finished:
-                    break
-                }
-            } receiveValue: { [weak self] listInfo in
-                guard let self = self else { return }
-                let locationList = self.dependencies.locationListViewMapper.map(
+        Task { @MainActor in
+            let locationListResult = await dependencies.getLocationList.retrieve(requestType: requestType)
+
+            switch locationListResult {
+            case let .success(listInfo):
+                let locationList = dependencies.locationListViewMapper.map(
                     from: listInfo,
                     shouldReload: shouldReload
                 )
-                let currentLocations = shouldReload ? [] : self.state.locationList.data
+                let currentLocations = shouldReload ? [] : state.locationList.data
                 let locations = currentLocations + locationList.data
                 let presentation = LocationListPresentation.data(
                     locations: locations,
                     hasMore: locationList.hasMore
                 )
-                self.nextPageRequest = listInfo.nextPageRequest
-                self.state = .display(locationList: presentation)
+                nextPageRequest = listInfo.nextPageRequest
+                state = .display(locationList: presentation)
+            case let .failure(error):
+                processRetrieveLocationsError(error, shouldReload: shouldReload)
             }
-            .store(in: &cancellables)
+        }
     }
 
-    private func mapError(_ error: GetLocationListError, shouldReload: Bool) {
+    private func processRetrieveLocationsError(_ error: GetLocationListError, shouldReload: Bool) {
         guard shouldReload else { return }
         let errorState = dependencies.locationListViewMapper.map(from: error)
         state = .showError(errorState)

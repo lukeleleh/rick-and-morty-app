@@ -1,5 +1,6 @@
-import Combine
 import Foundation
+
+typealias LocationListDataResult = Swift.Result<LocationListResponse, LocationListDataSourceError>
 
 enum LocationListDataSourceError: Error {
     case unableToDecode
@@ -7,7 +8,7 @@ enum LocationListDataSourceError: Error {
 }
 
 protocol LocationListDataSource {
-    func retrieve() -> AnyPublisher<LocationListResponse, LocationListDataSourceError>
-    func retrieve(url: URL) -> AnyPublisher<LocationListResponse, LocationListDataSourceError>
-    func retrieve(parameters: LocationListRequestParameters) -> AnyPublisher<LocationListResponse, LocationListDataSourceError>
+    func retrieve() async -> LocationListDataResult
+    func retrieve(url: URL) async -> LocationListDataResult
+    func retrieve(parameters: LocationListRequestParameters) async -> LocationListDataResult
 }
