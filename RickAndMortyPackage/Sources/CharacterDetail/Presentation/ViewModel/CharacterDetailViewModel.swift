@@ -1,4 +1,3 @@
-import Combine
 import Dispatch
 import Domain
 import Foundation
@@ -22,7 +21,6 @@ typealias ViewState = CharacterDetailPresentation
 
 final class CharacterDetailViewModel: CharacterDetailViewModelOutput {
     @Published private(set) var state: ViewState
-    private var cancellables = Set<AnyCancellable>()
     private let character: Character
     private let navigator: CharacterDetailWireframe
     private let dependencies: Dependencies
@@ -39,13 +37,15 @@ final class CharacterDetailViewModel: CharacterDetailViewModelOutput {
     }
 
     private func retrieveCharacterEpisodes() {
-        dependencies.getEpisodeList.retrieve(requestType: .url(character.episodesUrl))
-            .receive(on: DispatchQueue.main)
-            .sink { _ in } receiveValue: { [weak self] listInfo in
-                guard let self = self else { return }
-                self.state = self.dependencies.characterDetailViewMapper.map(from: listInfo, for: self.state)
+        Task { @MainActor in
+            let episodeListResult = await dependencies.getEpisodeList.retrieve(requestType: .url(character.episodesUrl))
+
+            guard let listInfo = try? episodeListResult.get() else {
+                return
             }
-            .store(in: &cancellables)
+
+            state = dependencies.characterDetailViewMapper.map(from: listInfo, for: state)
+        }
     }
 }
 
