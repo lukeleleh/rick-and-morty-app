@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -15,6 +15,13 @@
 		0BBBEDDA2665516B00F1EF34 /* DependenciesResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BBBEDD92665516B00F1EF34 /* DependenciesResolver.swift */; };
 		0BEF1D45251A775000AC73B4 /* MainTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF1D44251A775000AC73B4 /* MainTabBar.swift */; };
 		0BEF1D4B251A7A8D00AC73B4 /* RickAndMortyApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BEF1D4A251A7A8D00AC73B4 /* RickAndMortyApp.swift */; };
+		7B661D2329421DF600EE5BC7 /* CharacterDetail in Frameworks */ = {isa = PBXBuildFile; productRef = 7B661D2229421DF600EE5BC7 /* CharacterDetail */; };
+		7B661D2529421DF600EE5BC7 /* CharacterList in Frameworks */ = {isa = PBXBuildFile; productRef = 7B661D2429421DF600EE5BC7 /* CharacterList */; };
+		7B661D2729421DF600EE5BC7 /* EpisodeDetail in Frameworks */ = {isa = PBXBuildFile; productRef = 7B661D2629421DF600EE5BC7 /* EpisodeDetail */; };
+		7B661D2929421DF600EE5BC7 /* EpisodeList in Frameworks */ = {isa = PBXBuildFile; productRef = 7B661D2829421DF600EE5BC7 /* EpisodeList */; };
+		7B661D2B29421DF600EE5BC7 /* Filters in Frameworks */ = {isa = PBXBuildFile; productRef = 7B661D2A29421DF600EE5BC7 /* Filters */; };
+		7B661D2D29421DF600EE5BC7 /* LocationDetail in Frameworks */ = {isa = PBXBuildFile; productRef = 7B661D2C29421DF600EE5BC7 /* LocationDetail */; };
+		7B661D2F29421DF600EE5BC7 /* LocationList in Frameworks */ = {isa = PBXBuildFile; productRef = 7B661D2E29421DF600EE5BC7 /* LocationList */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +55,13 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7B661D2F29421DF600EE5BC7 /* LocationList in Frameworks */,
+				7B661D2929421DF600EE5BC7 /* EpisodeList in Frameworks */,
+				7B661D2529421DF600EE5BC7 /* CharacterList in Frameworks */,
+				7B661D2D29421DF600EE5BC7 /* LocationDetail in Frameworks */,
+				7B661D2B29421DF600EE5BC7 /* Filters in Frameworks */,
+				7B661D2729421DF600EE5BC7 /* EpisodeDetail in Frameworks */,
+				7B661D2329421DF600EE5BC7 /* CharacterDetail in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -161,6 +175,13 @@
 			);
 			name = RickAndMorty;
 			packageProductDependencies = (
+				7B661D2229421DF600EE5BC7 /* CharacterDetail */,
+				7B661D2429421DF600EE5BC7 /* CharacterList */,
+				7B661D2629421DF600EE5BC7 /* EpisodeDetail */,
+				7B661D2829421DF600EE5BC7 /* EpisodeList */,
+				7B661D2A29421DF600EE5BC7 /* Filters */,
+				7B661D2C29421DF600EE5BC7 /* LocationDetail */,
+				7B661D2E29421DF600EE5BC7 /* LocationList */,
 			);
 			productName = RickAndMorty;
 			productReference = 0B7E0A2723DC4E44006DD3AC /* RickAndMorty.app */;
@@ -335,7 +356,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -390,7 +411,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -406,7 +427,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = RickAndMorty/Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -424,7 +445,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = RickAndMorty/Support/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -443,7 +464,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = RickAndMortyTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -464,7 +485,7 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				INFOPLIST_FILE = RickAndMortyTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -509,6 +530,37 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		7B661D2229421DF600EE5BC7 /* CharacterDetail */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CharacterDetail;
+		};
+		7B661D2429421DF600EE5BC7 /* CharacterList */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CharacterList;
+		};
+		7B661D2629421DF600EE5BC7 /* EpisodeDetail */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EpisodeDetail;
+		};
+		7B661D2829421DF600EE5BC7 /* EpisodeList */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = EpisodeList;
+		};
+		7B661D2A29421DF600EE5BC7 /* Filters */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Filters;
+		};
+		7B661D2C29421DF600EE5BC7 /* LocationDetail */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LocationDetail;
+		};
+		7B661D2E29421DF600EE5BC7 /* LocationList */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = LocationList;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 0B7E0A1F23DC4E44006DD3AC /* Project object */;
 }
