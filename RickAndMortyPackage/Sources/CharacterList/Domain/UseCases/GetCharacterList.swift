@@ -1,4 +1,3 @@
-import Combine
 import Domain
 
 struct GetCharacterList: GetCharacterListUseCase {
@@ -8,22 +7,23 @@ struct GetCharacterList: GetCharacterListUseCase {
         self.dependencies = dependencies
     }
 
-    func retrieve(requestType: GetCharacterListType) -> AnyPublisher<CharacterListInfo, GetCharacterListError> {
-        let publisher: CharacterListPublisher = {
-            switch requestType {
-            case .homePage:
-                return dependencies.repository.retrieve()
-            case let .filtered(filters):
-                return dependencies.repository.retrieve(filters: filters)
-            case let .url(url):
-                return dependencies.repository.retrieve(url: url)
-            }
-        }()
+    func retrieve(requestType: GetCharacterListType) async -> Result<CharacterListInfo, GetCharacterListError> {
+        let repositoryResult: CharacterListResult
+        switch requestType {
+        case .homePage:
+            repositoryResult = await dependencies.repository.retrieve()
+        case let .filtered(filters):
+            repositoryResult = await dependencies.repository.retrieve(filters: filters)
+        case let .url(url):
+            repositoryResult = await dependencies.repository.retrieve(url: url)
+        }
 
-        return publisher
-            .map(dependencies.mapper.map(response:))
-            .mapError(dependencies.mapper.map(error:))
-            .eraseToAnyPublisher()
+        switch repositoryResult {
+        case let .success(list):
+            return .success(dependencies.mapper.map(response: list))
+        case let .failure(error):
+            return .failure(dependencies.mapper.map(error: error))
+        }
     }
 }
 

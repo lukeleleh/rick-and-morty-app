@@ -1,4 +1,3 @@
-import Combine
 import Dispatch
 import Domain
 import Foundation
@@ -52,7 +51,6 @@ final class CharacterListViewModel: CharacterListViewModelOutput {
     @Published private(set) var scrollToCharacterId: UUID?
     private var nextPageRequest: GetCharacterListType?
     private var selectedFilters = Filters.default
-    private var cancellables = Set<AnyCancellable>()
     private let navigator: CharacterListWireframe
     private let dependencies: Dependencies
 
@@ -65,19 +63,12 @@ final class CharacterListViewModel: CharacterListViewModelOutput {
     }
 
     private func retrieveCharacters(requestType: GetCharacterListType, shouldReload: Bool) {
-        dependencies.getCharacterList.retrieve(requestType: requestType)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                switch completion {
-                case let .failure(error):
-                    self?.mapError(error, shouldReload: shouldReload)
-                case .finished:
-                    break
-                }
-            } receiveValue: { [weak self] listInfo in
-                guard let self = self else { return }
-                let characterList = self.dependencies.characterListViewMapper.map(from: listInfo)
-                let currentCharacters = shouldReload ? [] : self.state.characterList.data
+        Task { @MainActor in
+            let characterListResult = await dependencies.getCharacterList.retrieve(requestType: requestType)
+            switch characterListResult {
+            case let .success(listInfo):
+                let characterList = dependencies.characterListViewMapper.map(from: listInfo)
+                let currentCharacters = shouldReload ? [] : state.characterList.data
                 let characters = currentCharacters + characterList.data
                 let presentation = CharacterListPresentation.data(
                     characters: characters,
@@ -85,13 +76,15 @@ final class CharacterListViewModel: CharacterListViewModelOutput {
                 )
                 self.nextPageRequest = listInfo.nextPageRequest
                 self.state = .display(characterList: presentation)
-                self.areFiltersSelected = !self.selectedFilters.isDefault
+                self.areFiltersSelected = !selectedFilters.isDefault
                 self.scrollToCharacterId = shouldReload ? characters.first?.id : nil
+            case let .failure(error):
+                processRetrieveCharactersError(error, shouldReload: shouldReload)
             }
-            .store(in: &cancellables)
+        }
     }
 
-    private func mapError(_ error: GetCharacterListError, shouldReload: Bool) {
+    private func processRetrieveCharactersError(_ error: GetCharacterListError, shouldReload: Bool) {
         guard shouldReload else { return }
         let errorState = dependencies.characterListViewMapper.map(from: error)
         state = .showError(errorState)

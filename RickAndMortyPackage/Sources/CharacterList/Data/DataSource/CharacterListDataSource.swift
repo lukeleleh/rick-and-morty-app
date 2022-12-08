@@ -1,5 +1,6 @@
-import Combine
 import Foundation
+
+typealias CharacterListDataResult = Result<CharacterListResponse, CharacterListDataSourceError>
 
 enum CharacterListDataSourceError: Error {
     case unableToDecode
@@ -7,7 +8,7 @@ enum CharacterListDataSourceError: Error {
 }
 
 protocol CharacterListDataSource {
-    func retrieve() -> AnyPublisher<CharacterListResponse, CharacterListDataSourceError>
-    func retrieve(url: URL) -> AnyPublisher<CharacterListResponse, CharacterListDataSourceError>
-    func retrieve(parameters: CharacterListRequestParameters) -> AnyPublisher<CharacterListResponse, CharacterListDataSourceError>
+    func retrieve() async -> CharacterListDataResult
+    func retrieve(url: URL) async -> CharacterListDataResult
+    func retrieve(parameters: CharacterListRequestParameters) async -> CharacterListDataResult
 }
