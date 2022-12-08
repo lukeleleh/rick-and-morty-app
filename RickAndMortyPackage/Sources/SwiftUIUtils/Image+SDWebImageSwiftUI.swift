@@ -1,4 +1,3 @@
-import SDWebImageSwiftUI
 import SwiftUI
 
 public struct URLImage: View {
@@ -9,8 +8,14 @@ public struct URLImage: View {
     }
 
     public var body: some View {
-        WebImage(url: imageUrl)
-            .cancelOnDisappear(true)
-            .resizable()
+        AsyncImage(
+            url: imageUrl,
+            content: { image in
+                image.resizable()
+            },
+            placeholder: {
+                Color.gray
+            }
+        )
     }
 }

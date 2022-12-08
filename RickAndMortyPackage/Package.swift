@@ -21,9 +21,7 @@ let package = Package(
         .library(name: "SwiftUIUtils", targets: ["SwiftUIUtils"]),
         .library(name: "SwiftUtils", targets: ["SwiftUtils"])
     ],
-    dependencies: [
-        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", from: "1.5.0")
-    ],
+    dependencies: [],
     targets: [
         .target(
             name: "CharacterDetail",
@@ -76,7 +74,7 @@ let package = Package(
         .target(name: "RickAndMortyAPI", dependencies: []),
         .testTarget(name: "RickAndMortyAPITests", dependencies: ["RickAndMortyAPI"]),
 
-        .target(name: "SwiftUIUtils", dependencies: ["SDWebImageSwiftUI"]),
+        .target(name: "SwiftUIUtils", dependencies: []),
         .testTarget(name: "SwiftUIUtilsTests", dependencies: ["SwiftUIUtils"]),
 
         .target(name: "SwiftUtils", dependencies: []),
