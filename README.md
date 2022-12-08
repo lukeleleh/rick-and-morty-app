@@ -10,17 +10,17 @@ Characters list           |  Character detail  |  Location detail  |  Episode de
 The app is built using the MVVM architecture with clean architecture, presenting the following key features:
 - Usage of the Combine framework
 - Decoupled presentation, domain and data layers
-- All the features/screens are created inside their own package using SPM (Swift Package Manager)
+- All the features/screens are created inside their corresponding module using SPM (Swift Package Manager)
 - Light and dark themes
 
 ## Requirements
 
-- iOS 14.4+ (Swift 5)
-- Xcode 12.4
+- iOS 16.0+ (Swift 5.7)
+- Xcode 14.1
 
 ## Usage
 1. Clone the repo
-2. Open the workspace file `RickAndMorty.xcworkspace` and run the app
+2. Open the workspace file `RickAndMorty.xcodeproj` and run the app
 
 ## Author
 Luka Hristic
