@@ -1,5 +1,6 @@
-import Combine
 import struct Foundation.URL
+
+typealias LocationListResult = Swift.Result<LocationList, LocationListRepositoryError>
 
 enum LocationListRepositoryError: Error {
     case unableToDecode
@@ -7,6 +8,6 @@ enum LocationListRepositoryError: Error {
 }
 
 protocol LocationListRepository {
-    func retrieve() -> AnyPublisher<LocationList, LocationListRepositoryError>
-    func retrieve(url: URL) -> AnyPublisher<LocationList, LocationListRepositoryError>
+    func retrieve() async -> LocationListResult
+    func retrieve(url: URL) async -> LocationListResult
 }

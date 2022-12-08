@@ -1,4 +1,3 @@
-import Combine
 import struct Foundation.URL
 
 public enum GetCharacterListError: Error {
@@ -12,5 +11,5 @@ public enum GetCharacterListType: Equatable {
 }
 
 public protocol GetCharacterListUseCase {
-    func retrieve(requestType: GetCharacterListType) -> AnyPublisher<CharacterListInfo, GetCharacterListError>
+    func retrieve(requestType: GetCharacterListType) async -> Result<CharacterListInfo, GetCharacterListError>
 }

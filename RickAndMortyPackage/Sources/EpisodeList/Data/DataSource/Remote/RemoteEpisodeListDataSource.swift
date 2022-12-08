@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 import Network
 
@@ -9,39 +8,47 @@ struct RemoteEpisodeListDataSource: EpisodeListDataSource {
         self.requester = requester
     }
 
-    func retrieve() -> AnyPublisher<EpisodeListResponse, EpisodeListDataSourceError> {
-        requester.request(targetType: EpisodeListNetworkTargetType.all)
-            .mapResponse()
+    func retrieve() async -> EpisodeListDataResult {
+        do {
+            let data = try await requester.request(targetType: EpisodeListNetworkTargetType.all)
+            return mapResponse(from: data)
+        } catch {
+            return .failure(.custom(error))
+        }
     }
 
-    func retrieve(url: URL) -> AnyPublisher<EpisodeListResponse, EpisodeListDataSourceError> {
-        requester.request(targetType: URLNetworkTargetType(url: url))
-            .mapResponse()
+    func retrieve(url: URL) async -> EpisodeListDataResult {
+        do {
+            let data = try await requester.request(targetType: URLNetworkTargetType(url: url))
+            return mapResponse(from: data)
+        } catch {
+            return .failure(.custom(error))
+        }
     }
 
-    func retrieve(parameters: EpisodeListRequestParameters) -> AnyPublisher<EpisodeListResponse, EpisodeListDataSourceError> {
-        requester.request(targetType: EpisodeListNetworkTargetType.filter(parameters))
-            .mapResponse()
+    func retrieve(parameters: EpisodeListRequestParameters) async -> EpisodeListDataResult {
+        do {
+            let data = try await requester.request(targetType: EpisodeListNetworkTargetType.filter(parameters))
+            return mapResponse(from: data)
+        } catch {
+            return .failure(.custom(error))
+        }
     }
 }
 
-private extension AnyPublisher where Output == Data, Failure == NetworkRequestError {
-    func mapResponse() -> AnyPublisher<EpisodeListResponse, EpisodeListDataSourceError> {
-        tryMap { data in
-            let decoder = JSONDecoder()
-            if let response = try? decoder.decode(EpisodeListResponse.self, from: data) {
-                return response
-            } else if let response = try? decoder.decode([EpisodeListResponse.Result].self, from: data) {
-                let emptyInfo = EpisodeListResponse.Info(count: response.count, pages: 1, next: nil, prev: nil)
-                return EpisodeListResponse(info: emptyInfo, results: response)
-            } else if let response = try? decoder.decode(EpisodeListResponse.Result.self, from: data) {
-                let emptyInfo = EpisodeListResponse.Info(count: 1, pages: 1, next: nil, prev: nil)
-                return EpisodeListResponse(info: emptyInfo, results: [response])
-            } else {
-                throw EpisodeListDataSourceError.unableToDecode
-            }
+private extension RemoteEpisodeListDataSource {
+    func mapResponse(from data: Data) -> EpisodeListDataResult {
+        let decoder = JSONDecoder()
+        if let response = try? decoder.decode(EpisodeListResponse.self, from: data) {
+            return .success(response)
+        } else if let response = try? decoder.decode([EpisodeListResponse.Result].self, from: data) {
+            let emptyInfo = EpisodeListResponse.Info(count: response.count, pages: 1, next: nil, prev: nil)
+            return .success(EpisodeListResponse(info: emptyInfo, results: response))
+        } else if let response = try? decoder.decode(EpisodeListResponse.Result.self, from: data) {
+            let emptyInfo = EpisodeListResponse.Info(count: 1, pages: 1, next: nil, prev: nil)
+            return .success(EpisodeListResponse(info: emptyInfo, results: [response]))
+        } else {
+            return .failure(EpisodeListDataSourceError.unableToDecode)
         }
-        .mapError { _ in EpisodeListDataSourceError.unableToDecode }
-        .eraseToAnyPublisher()
     }
 }

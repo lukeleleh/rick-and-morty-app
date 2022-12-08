@@ -1,4 +1,3 @@
-import Combine
 import Domain
 import struct Foundation.URL
 
@@ -14,21 +13,24 @@ struct DefaultEpisodeListRepository: EpisodeListRepository {
         self.mapper = mapper
     }
 
-    func retrieve() -> AnyPublisher<EpisodeList, EpisodeListRepositoryError> {
-        remoteDataSource.retrieve()
-            .mapResponse(mapper: mapper)
+    func retrieve() async -> EpisodeListResult {
+        let remoteDataSourceResult = await remoteDataSource.retrieve()
+        return mapResponse(from: remoteDataSourceResult)
     }
 
-    func retrieve(url: URL) -> AnyPublisher<EpisodeList, EpisodeListRepositoryError> {
-        remoteDataSource.retrieve(url: url)
-            .mapResponse(mapper: mapper)
+    func retrieve(url: URL) async -> EpisodeListResult {
+        let remoteDataSourceResult = await remoteDataSource.retrieve(url: url)
+        return mapResponse(from: remoteDataSourceResult)
     }
 }
 
-private extension AnyPublisher where Output == EpisodeListResponse, Failure == EpisodeListDataSourceError {
-    func mapResponse(mapper: EpisodeListMapper) -> AnyPublisher<EpisodeList, EpisodeListRepositoryError> {
-        map(mapper.map(response:))
-            .mapError(mapper.map(error:))
-            .eraseToAnyPublisher()
+private extension DefaultEpisodeListRepository {
+    func mapResponse(from result: EpisodeListDataResult) -> EpisodeListResult {
+        switch result {
+        case let .success(response):
+            return .success(mapper.map(response: response))
+        case let .failure(error):
+            return .failure(mapper.map(error: error))
+        }
     }
 }

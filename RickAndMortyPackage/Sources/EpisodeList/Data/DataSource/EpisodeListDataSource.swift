@@ -1,5 +1,6 @@
-import Combine
 import Foundation
+
+typealias EpisodeListDataResult = Result<EpisodeListResponse, EpisodeListDataSourceError>
 
 enum EpisodeListDataSourceError: Error {
     case unableToDecode
@@ -7,7 +8,7 @@ enum EpisodeListDataSourceError: Error {
 }
 
 protocol EpisodeListDataSource {
-    func retrieve() -> AnyPublisher<EpisodeListResponse, EpisodeListDataSourceError>
-    func retrieve(url: URL) -> AnyPublisher<EpisodeListResponse, EpisodeListDataSourceError>
-    func retrieve(parameters: EpisodeListRequestParameters) -> AnyPublisher<EpisodeListResponse, EpisodeListDataSourceError>
+    func retrieve() async -> EpisodeListDataResult
+    func retrieve(url: URL) async -> EpisodeListDataResult
+    func retrieve(parameters: EpisodeListRequestParameters) async -> EpisodeListDataResult
 }

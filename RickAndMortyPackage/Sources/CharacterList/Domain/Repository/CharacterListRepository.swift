@@ -1,8 +1,7 @@
-import Combine
 import Domain
 import struct Foundation.URL
 
-typealias CharacterListPublisher = AnyPublisher<CharacterList, CharacterListRepositoryError>
+typealias CharacterListResult = Result<CharacterList, CharacterListRepositoryError>
 
 enum CharacterListRepositoryError: Error {
     case unableToDecode
@@ -10,7 +9,7 @@ enum CharacterListRepositoryError: Error {
 }
 
 protocol CharacterListRepository {
-    func retrieve() -> CharacterListPublisher
-    func retrieve(url: URL) -> CharacterListPublisher
-    func retrieve(filters: Filters) -> CharacterListPublisher
+    func retrieve() async -> CharacterListResult
+    func retrieve(url: URL) async -> CharacterListResult
+    func retrieve(filters: Filters) async -> CharacterListResult
 }

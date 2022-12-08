@@ -1,4 +1,3 @@
-import Combine
 import struct Foundation.URL
 
 public enum GetEpisodeListError: Error {
@@ -11,5 +10,5 @@ public enum GetEpisodeListType {
 }
 
 public protocol GetEpisodeListUseCase {
-    func retrieve(requestType: GetEpisodeListType) -> AnyPublisher<EpisodeListInfo, GetEpisodeListError>
+    func retrieve(requestType: GetEpisodeListType) async -> Result<EpisodeListInfo, GetEpisodeListError>
 }

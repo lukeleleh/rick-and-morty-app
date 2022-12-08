@@ -1,4 +1,3 @@
-import Combine
 import struct Foundation.URL
 
 struct DefaultLocationListRepository: LocationListRepository {
@@ -13,21 +12,24 @@ struct DefaultLocationListRepository: LocationListRepository {
         self.mapper = mapper
     }
 
-    func retrieve() -> AnyPublisher<LocationList, LocationListRepositoryError> {
-        remoteDataSource.retrieve()
-            .mapResponse(mapper: mapper)
+    func retrieve() async -> LocationListResult {
+        let remoteDataSourceResult = await remoteDataSource.retrieve()
+        return mapResponse(from: remoteDataSourceResult)
     }
 
-    func retrieve(url: URL) -> AnyPublisher<LocationList, LocationListRepositoryError> {
-        remoteDataSource.retrieve(url: url)
-            .mapResponse(mapper: mapper)
+    func retrieve(url: URL) async -> LocationListResult {
+        let remoteDataSourceResult = await remoteDataSource.retrieve(url: url)
+        return mapResponse(from: remoteDataSourceResult)
     }
 }
 
-private extension AnyPublisher where Output == LocationListResponse, Failure == LocationListDataSourceError {
-    func mapResponse(mapper: LocationListMapper) -> AnyPublisher<LocationList, LocationListRepositoryError> {
-        map(mapper.map(response:))
-            .mapError(mapper.map(error:))
-            .eraseToAnyPublisher()
+private extension DefaultLocationListRepository {
+    func mapResponse(from result: LocationListDataResult) -> LocationListResult {
+        switch result {
+        case let .success(response):
+            return .success(mapper.map(response: response))
+        case let .failure(error):
+            return .failure(mapper.map(error: error))
+        }
     }
 }

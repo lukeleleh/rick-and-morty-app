@@ -7,7 +7,7 @@ struct FiltersView: View {
     var body: some View {
         NavigationView {
             Form {
-                ForEach(viewModel.output.presentation.sections.indices) { index in
+                ForEach(viewModel.output.presentation.sections.indices, id: \.self) { index in
                     let section = viewModel.output.presentation.sections[index]
                     Section(header: Text(section.title)) {
                         Picker(section.title, selection: $viewModel.presentation.sections[index].selectedOption) {

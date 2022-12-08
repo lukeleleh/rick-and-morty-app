@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 import Network
 
@@ -9,27 +8,41 @@ struct RemoteLocationListDataSource: LocationListDataSource {
         self.requester = requester
     }
 
-    func retrieve() -> AnyPublisher<LocationListResponse, LocationListDataSourceError> {
-        requester.request(targetType: LocationListNetworkTargetType.all)
-            .mapResponse()
+    func retrieve() async -> LocationListDataResult {
+        do {
+            let data = try await requester.request(targetType: LocationListNetworkTargetType.all)
+            return mapResponse(from: data)
+        } catch {
+            return .failure(.custom(error))
+        }
     }
 
-    func retrieve(url: URL) -> AnyPublisher<LocationListResponse, LocationListDataSourceError> {
-        requester.request(targetType: URLNetworkTargetType(url: url))
-            .mapResponse()
+    func retrieve(url: URL) async -> LocationListDataResult {
+        do {
+            let data = try await requester.request(targetType: URLNetworkTargetType(url: url))
+            return mapResponse(from: data)
+        } catch {
+            return .failure(.custom(error))
+        }
     }
 
-    func retrieve(parameters: LocationListRequestParameters) -> AnyPublisher<LocationListResponse, LocationListDataSourceError> {
-        requester.request(targetType: LocationListNetworkTargetType.filter(parameters))
-            .mapResponse()
+    func retrieve(parameters: LocationListRequestParameters) async -> LocationListDataResult {
+        do {
+            let data = try await requester.request(targetType: LocationListNetworkTargetType.filter(parameters))
+            return mapResponse(from: data)
+        } catch {
+            return .failure(.custom(error))
+        }
     }
 }
 
-private extension AnyPublisher where Output == Data, Failure == NetworkRequestError {
-    func mapResponse() -> AnyPublisher<LocationListResponse, LocationListDataSourceError> {
-        mapError(LocationListDataSourceError.custom)
-            .decode(type: LocationListResponse.self, decoder: JSONDecoder())
-            .mapError { _ in LocationListDataSourceError.unableToDecode }
-            .eraseToAnyPublisher()
+private extension RemoteLocationListDataSource {
+    func mapResponse(from data: Data) -> LocationListDataResult {
+        let decoder = JSONDecoder()
+        do {
+            return try .success(decoder.decode(LocationListResponse.self, from: data))
+        } catch {
+            return .failure(LocationListDataSourceError.unableToDecode)
+        }
     }
 }

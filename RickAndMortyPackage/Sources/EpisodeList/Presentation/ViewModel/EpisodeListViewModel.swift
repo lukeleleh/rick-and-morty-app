@@ -1,7 +1,5 @@
-import Combine
 import Dispatch
 import Domain
-import struct Domain.Episode
 import Foundation
 import struct SwiftUI.AnyView
 
@@ -46,7 +44,6 @@ enum ViewState {
 final class EpisodeListViewModel: EpisodeListViewModelOutput {
     @Published private(set) var state: ViewState = .display(episodeList: .placeholder(numberOfItems: 20))
     private var nextPageRequest: GetEpisodeListType?
-    private var cancellables = Set<AnyCancellable>()
     private let navigator: EpisodeListWireframe
     private let dependencies: Dependencies
 
@@ -59,17 +56,11 @@ final class EpisodeListViewModel: EpisodeListViewModelOutput {
     }
 
     private func retrieveEpisodes(requestType: GetEpisodeListType, shouldReload: Bool) {
-        dependencies.getEpisodeList.retrieve(requestType: requestType)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] completion in
-                switch completion {
-                case let .failure(error):
-                    self?.mapError(error, shouldReload: shouldReload)
-                case .finished:
-                    break
-                }
-            } receiveValue: { [weak self] listInfo in
-                guard let self = self else { return }
+        Task { @MainActor in
+            let episodeListResult = await dependencies.getEpisodeList.retrieve(requestType: requestType)
+
+            switch episodeListResult {
+            case let .success(listInfo):
                 let episodeList = self.dependencies.episodeListViewMapper.map(from: listInfo, shouldReload: shouldReload)
                 let currentEpisodes = shouldReload ? [] : self.state.episodeList.data
                 let episodes = currentEpisodes + episodeList.data
@@ -79,11 +70,13 @@ final class EpisodeListViewModel: EpisodeListViewModelOutput {
                 )
                 self.nextPageRequest = listInfo.nextPageRequest
                 self.state = .display(episodeList: presentation)
+            case let .failure(error):
+                processRetrieveEpisodesError(error, shouldReload: shouldReload)
             }
-            .store(in: &cancellables)
+        }
     }
 
-    private func mapError(_ error: GetEpisodeListError, shouldReload: Bool) {
+    private func processRetrieveEpisodesError(_ error: GetEpisodeListError, shouldReload: Bool) {
         guard shouldReload else { return }
         let errorState = dependencies.episodeListViewMapper.map(from: error)
         state = .showError(errorState)
