@@ -40,6 +40,7 @@
 		0BBBEDD92665516B00F1EF34 /* DependenciesResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DependenciesResolver.swift; sourceTree = "<group>"; };
 		0BEF1D44251A775000AC73B4 /* MainTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBar.swift; sourceTree = "<group>"; };
 		0BEF1D4A251A7A8D00AC73B4 /* RickAndMortyApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RickAndMortyApp.swift; sourceTree = "<group>"; };
+		7B661D2129421D8D00EE5BC7 /* RickAndMortyPackage */ = {isa = PBXFileReference; lastKnownFileType = wrapper; path = RickAndMortyPackage; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +92,7 @@
 		0B7E0A1E23DC4E44006DD3AC = {
 			isa = PBXGroup;
 			children = (
+				7B661D2129421D8D00EE5BC7 /* RickAndMortyPackage */,
 				0B7E0A2923DC4E44006DD3AC /* RickAndMorty */,
 				0B7E0A4023DC4E45006DD3AC /* RickAndMortyTests */,
 				0B7E0A2823DC4E44006DD3AC /* Products */,
