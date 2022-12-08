@@ -1,4 +1,3 @@
-import Combine
 import Foundation
 
 public enum NetworkRequestError: Error {
@@ -6,9 +5,5 @@ public enum NetworkRequestError: Error {
 }
 
 public protocol NetworkRequester {
-    typealias ResponseResult = Result<Data, NetworkRequestError>
-    typealias Completion = (ResponseResult) -> Void
-
-    func request(targetType: NetworkTargetType, completion: @escaping Completion)
-    func request(targetType: NetworkTargetType) -> AnyPublisher<Data, NetworkRequestError>
+    func request(targetType: NetworkTargetType) async throws -> Data
 }
