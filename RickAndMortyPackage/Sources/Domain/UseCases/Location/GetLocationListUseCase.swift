@@ -1,4 +1,3 @@
-import Combine
 import struct Foundation.URL
 
 public enum GetLocationListError: Error {
@@ -11,5 +10,5 @@ public enum GetLocationListType {
 }
 
 public protocol GetLocationListUseCase {
-    func retrieve(requestType: GetLocationListType) -> AnyPublisher<LocationListInfo, GetLocationListError>
+    func retrieve(requestType: GetLocationListType) async -> Swift.Result<LocationListInfo, GetLocationListError>
 }
