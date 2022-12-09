@@ -8,7 +8,7 @@ Characters list           |  Character detail  |  Location detail  |  Episode de
 
 
 The app is built using the MVVM architecture with clean architecture, presenting the following key features:
-- Usage of the Combine framework
+- Usage of async/await
 - Decoupled presentation, domain and data layers
 - All the features/screens are created inside their corresponding module using SPM (Swift Package Manager)
 - Light and dark themes
